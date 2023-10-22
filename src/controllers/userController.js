@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Playlist = require("../models/Playlist");
+const Track = require("../models/Track");
 
 module.exports = {
   list: async (req, res) => {
