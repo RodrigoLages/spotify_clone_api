@@ -1,0 +1,46 @@
+# Node.js files
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Environment variables
+.env
+
+# Visual Studio Code settings (if using VS Code)
+.vscode/
+
+# Log files
+logs/
+*.log*
+
+# User-specific files (e.g., editor config files)
+.idea/
+*.suo
+*.user
+*.sln
+*.swp
+.DS_Store
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+
+# macOS directory attributes
+.AppleDouble
+
+# Compiled binary files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Dependency directories
+.pnpm/
+pnp-lock.yaml
+
+
+# Jest
+coverage/
