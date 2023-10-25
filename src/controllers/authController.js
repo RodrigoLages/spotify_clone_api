@@ -1,5 +1,4 @@
 const User = require("../models/User");
-const responseHandler = require("../middlewares/responseHandler");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const SECRET = process.env.JWT_SECRET;
@@ -29,14 +28,10 @@ const AuthController = {
     const hashed = await bcrypt.hash(pass, salt);
     newUser.pass = hashed;
 
-    const user = await User.create(newUser);
+    const user = (await User.create(newUser)).toJSON();
     delete user.pass;
     return user;
   },
 };
-
-for (let key of Object.keys(AuthController)) {
-  AuthController[key] = responseHandler(AuthController[key]);
-}
 
 module.exports = AuthController;

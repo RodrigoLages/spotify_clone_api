@@ -1,7 +1,4 @@
-const User = require("../models/User");
 const Playlist = require("../models/Playlist");
-const Track = require("../models/Track");
-const responseHandler = require("../middlewares/responseHandler");
 
 const PlaylistController = {
   create: async (req) => {
@@ -22,22 +19,18 @@ const PlaylistController = {
   },
 
   update: async (req) => {
-    const playlist = await this.listOne(req);
+    const playlist = await PlaylistController.listOne(req);
     const { title } = req.body;
-    playlist.title = title;
+    playlist.set({ title });
     await playlist.save();
     return playlist;
   },
 
   delete: async (req) => {
-    const playlist = await this.listOne(req);
+    const playlist = await PlaylistController.listOne(req);
     await playlist.destroy();
     return { msg: "Playlist deleted" };
   },
 };
-
-for (let key of Object.keys(PlaylistController)) {
-  PlaylistController[key] = responseHandler(PlaylistController[key]);
-}
 
 module.exports = PlaylistController;

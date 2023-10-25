@@ -1,41 +1,34 @@
 const User = require("../models/User");
-const Playlist = require("../models/Playlist");
-const Track = require("../models/Track");
-const responseHandler = require("../middlewares/responseHandler");
 
 const UserController = {
   list: async (req) => {
-    const users = await User.findAll();
+    const users = await User.findAll({ attributes: { exclude: ["pass"] } });
     return users;
   },
 
   listOne: async (req) => {
     const id = req.params.id;
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(id, { attributes: { exclude: ["pass"] } });
     if (!user) throw new Error("User not found");
     return user;
   },
 
   update: async (req) => {
-    const user = await this.listOne(req);
-    const { username, birth } = req.body;
+    const user = await UserController.listOne(req);
+    const { body } = req;
+    delete body.email;
+    delete body.pass;
 
-    user.username = username;
-    user.birth = birth;
+    user.set(body);
     await user.save();
-
     return user;
   },
 
   delete: async (req) => {
-    const user = await this.listOne(req);
+    const user = await UserController.listOne(req);
     await user.destroy();
     return { msg: "User deleted" };
   },
 };
-
-for (let key of Object.keys(UserController)) {
-  UserController[key] = responseHandler(UserController[key]);
-}
 
 module.exports = UserController;
