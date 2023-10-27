@@ -37,8 +37,4 @@ const Track = sequelize.define("Track", {
   },
 });
 
-Track.belongsToMany(Playlist, {
-  through: "TrackPlaylist",
-});
-
 module.exports = Track;

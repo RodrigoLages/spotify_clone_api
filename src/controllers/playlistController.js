@@ -1,4 +1,6 @@
-const Playlist = require("../models/Playlist");
+const Playlist = require("../associations/Playlist");
+const Track = require("../associations/Track");
+const TrackController = require("./trackController");
 
 const PlaylistController = {
   create: async (req) => {
@@ -6,14 +8,20 @@ const PlaylistController = {
     return newPlaylist;
   },
 
-  list: async (req) => {
-    const playlists = await Playlist.findAll();
+  listByUser: async (req) => {
+    const UserId = req.params.id;
+    const playlists = await Playlist.findAll({ where: { UserId } });
     return playlists;
   },
 
   listOne: async (req) => {
     const id = req.params.id;
-    const playlists = await Playlist.findByPk(id);
+    const playlists = await Playlist.findByPk(id, {
+      include: {
+        model: Track,
+        through: { attributes: [] },
+      },
+    });
     if (!playlists) throw new Error("Playlist not found");
     return playlists;
   },
@@ -30,6 +38,26 @@ const PlaylistController = {
     const playlist = await PlaylistController.listOne(req);
     await playlist.destroy();
     return { msg: "Playlist deleted" };
+  },
+
+  addTrack: async (req) => {
+    const { TrackId, PlaylistId } = req.body;
+    const playlist = await PlaylistController.listOne({
+      params: { id: PlaylistId },
+    });
+    const track = await TrackController.listOne({ params: { id: TrackId } });
+    await playlist.addTrack(track);
+    return { msg: "Track added to playlist" };
+  },
+
+  removeTrack: async (req) => {
+    const { TrackId, PlaylistId } = req.body;
+    const playlist = await PlaylistController.listOne({
+      params: { id: PlaylistId },
+    });
+    const track = await TrackController.listOne({ params: { id: TrackId } });
+    await playlist.removeTrack(track);
+    return { msg: "Track removed from playlist" };
   },
 };
 

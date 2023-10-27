@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database/db");
 const User = require("./User");
+const Track = require("./Track");
 
 const Playlist = sequelize.define("Playlist", {
   title: {
@@ -13,7 +14,5 @@ const Playlist = sequelize.define("Playlist", {
     allowNull: true,
   },
 });
-
-Playlist.belongsTo(User);
 
 module.exports = Playlist;
