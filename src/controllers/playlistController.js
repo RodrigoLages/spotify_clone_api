@@ -1,5 +1,5 @@
-const Playlist = require("../associations/Playlist");
-const Track = require("../associations/Track");
+const Playlist = require("../hooks/Playlist");
+const Track = require("../hooks/Track");
 const TrackController = require("./trackController");
 
 const PlaylistController = {
@@ -28,8 +28,9 @@ const PlaylistController = {
 
   update: async (req) => {
     const playlist = await PlaylistController.listOne(req);
-    const { title, image } = req.body;
-    playlist.set({ title, image });
+    const body = req.body;
+    if (body.image !== null) delete body.image;
+    playlist.set(body);
     await playlist.save();
     return playlist;
   },
@@ -40,6 +41,7 @@ const PlaylistController = {
     return { msg: "Playlist deleted" };
   },
 
+  //Tracks methods
   addTrack: async (req) => {
     const { TrackId, PlaylistId } = req.body;
     const playlist = await PlaylistController.listOne({

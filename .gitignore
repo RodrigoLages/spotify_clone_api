@@ -44,3 +44,6 @@ pnp-lock.yaml
 
 # Jest
 coverage/
+
+# Uploads
+public/

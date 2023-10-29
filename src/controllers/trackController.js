@@ -1,4 +1,4 @@
-const Track = require("../associations/Track");
+const Track = require("../hooks/Track");
 
 const TrackController = {
   create: async (req) => {

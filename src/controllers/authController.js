@@ -1,4 +1,4 @@
-const User = require("../associations/User");
+const User = require("../hooks/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const SECRET = process.env.JWT_SECRET;

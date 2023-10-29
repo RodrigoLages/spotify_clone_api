@@ -1,4 +1,4 @@
-const User = require("../associations/User");
+const User = require("../hooks/User");
 
 const UserController = {
   list: async (req) => {
