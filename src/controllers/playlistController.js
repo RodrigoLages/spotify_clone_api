@@ -28,8 +28,8 @@ const PlaylistController = {
 
   update: async (req) => {
     const playlist = await PlaylistController.listOne(req);
-    const { title } = req.body;
-    playlist.set({ title });
+    const { title, image } = req.body;
+    playlist.set({ title, image });
     await playlist.save();
     return playlist;
   },
