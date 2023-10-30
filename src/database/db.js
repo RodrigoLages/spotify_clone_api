@@ -7,6 +7,11 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   dialect: "mysql",
   define: {
     freezeTableName: true,
+    hooks: {
+      afterFind(result) {
+        if (!result) throw new Error("Record not found");
+      },
+    },
   },
 });
 
