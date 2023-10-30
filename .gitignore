@@ -46,4 +46,5 @@ pnp-lock.yaml
 coverage/
 
 # Uploads
-public/
+/public/img/*
+/public/aud/*
