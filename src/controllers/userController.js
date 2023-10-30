@@ -9,12 +9,12 @@ const UserController = {
   listOne: async (req) => {
     const id = req.params.id;
     const user = await User.findByPk(id, { attributes: { exclude: ["pass"] } });
-    if (!user) throw new Error("User not found");
     return user;
   },
 
   update: async (req) => {
-    const user = await UserController.listOne(req);
+    const id = req.params.id;
+    const user = await User.findByPk(id, { attributes: { exclude: ["pass"] } });
     const { body } = req;
     delete body.email;
     delete body.pass;
@@ -25,7 +25,8 @@ const UserController = {
   },
 
   delete: async (req) => {
-    const user = await UserController.listOne(req);
+    const id = req.params.id;
+    const user = await User.findByPk(id);
     await user.destroy();
     return { msg: "User deleted" };
   },

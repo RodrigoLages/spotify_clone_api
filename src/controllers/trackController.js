@@ -14,12 +14,12 @@ const TrackController = {
   listOne: async (req) => {
     const id = req.params.id;
     const track = await Track.findByPk(id);
-    if (!track) throw new Error("Track not found");
     return track;
   },
 
   update: async (req) => {
-    const track = await TrackController.listOne(req);
+    const id = req.params.id;
+    const track = await Track.findByPk(id);
     const { body } = req;
     track.set(body);
     await track.save();
@@ -27,7 +27,8 @@ const TrackController = {
   },
 
   delete: async (req) => {
-    const track = await TrackController.listOne(req);
+    const id = req.params.id;
+    const track = await Track.findByPk(id);
     await track.destroy();
     return { msg: "Track deleted" };
   },
