@@ -1,5 +1,6 @@
 const Playlist = require("../hooks/Playlist");
 const Track = require("../hooks/Track");
+const deleteFile = require("../util/deleteFile");
 
 const UploadController = {
   addPlaylistImg: async (req) => {
@@ -8,7 +9,10 @@ const UploadController = {
     }
 
     const filePath = req.file.path;
-    const playlist = await Playlist.findByPk(req.params.id);
+    const playlist = await Playlist.findByPk(req.params.id).catch(() => {
+      deleteFile(filePath);
+      throw new Error("Playlist not found");
+    });
     playlist.set({ image: filePath });
     await playlist.save();
 
@@ -17,11 +21,14 @@ const UploadController = {
 
   addTrackAud: async (req) => {
     if (!req.file) {
-      throw new Error("Invalid file format. Only MP3 are allowed.");
+      throw new Error("Invalid file format. Only MP3 is allowed.");
     }
 
     const filePath = req.file.path;
-    const track = await Track.findByPk(req.params.id);
+    const track = await Track.findByPk(req.params.id).catch(() => {
+      deleteFile(filePath);
+      throw new Error("Track not found");
+    });
     track.set({ src: filePath });
     await track.save();
 

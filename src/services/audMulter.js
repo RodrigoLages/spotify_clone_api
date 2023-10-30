@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
   const fileExtension = path.extname(file.originalname).toLowerCase();
-  console.log(fileExtension);
+
   if (fileExtension === ".mp3") {
     cb(null, true);
   } else {

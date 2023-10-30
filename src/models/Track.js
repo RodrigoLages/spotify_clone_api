@@ -33,7 +33,7 @@ const Track = sequelize.define("Track", {
 
   src: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
 });
 

@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const Track = require("../hooks/Track");
 
 const TrackController = {
@@ -6,8 +7,8 @@ const TrackController = {
     return newTrack;
   },
 
-  list: async (req) => {
-    const tracks = await Track.findAll();
+  list: async () => {
+    const tracks = await Track.findAll({ where: { src: { [Op.not]: null } } });
     return tracks;
   },
 
@@ -21,6 +22,7 @@ const TrackController = {
     const id = req.params.id;
     const track = await Track.findByPk(id);
     const { body } = req;
+    delete body.src;
     track.set(body);
     await track.save();
     return track;
