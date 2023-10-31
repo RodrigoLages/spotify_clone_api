@@ -3,6 +3,8 @@ const Track = require("../hooks/Track");
 
 const TrackController = {
   create: async (req) => {
+    const body = req.body;
+    delete body.src;
     const newTrack = await Track.create(req.body);
     return newTrack;
   },
