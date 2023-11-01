@@ -1,8 +1,8 @@
 const ApiError = require("../classes/ApiError");
 
-const responseHandlingMiddleware = (controller) => async (req, res) => {
+const responseHandlingMiddleware = (controller) => async (req, res, next) => {
   try {
-    const response = await controller(req);
+    const response = await controller(req, next);
     return res.status(200).json(response);
   } catch (err) {
     if (err instanceof ApiError) {
