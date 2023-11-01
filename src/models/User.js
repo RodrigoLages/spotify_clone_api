@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const ApiError = require("../classes/ApiError");
 const sequelize = require("../database/db");
 
 const User = sequelize.define("User", {
@@ -8,7 +9,7 @@ const User = sequelize.define("User", {
     validate: {
       minLength: function (value) {
         if (value.length < 3) {
-          throw new Error("Username must be at least 3 characters long");
+          throw new ApiError(422, "Username must be at least 3 characters long");
         }
       },
     },
@@ -34,7 +35,7 @@ const User = sequelize.define("User", {
     validate: {
       isNotInFuture: function (value) {
         if (value > new Date()) {
-          throw new Error("Birth date cannot be in the future");
+          throw new ApiError(422, "Birth date cannot be in the future");
         }
       },
     },

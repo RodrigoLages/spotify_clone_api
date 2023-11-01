@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const ApiError = require("../classes/ApiError");
 const sequelize = require("../database/db");
 const Playlist = require("./Playlist");
 
@@ -25,7 +26,7 @@ const Track = sequelize.define("Track", {
     validate: {
       isValidDuration(value) {
         if (value && !/^[1-5]?[0-9]:[0-5][0-9]$/.test(value)) {
-          throw new Error("Invalid duration format");
+          throw new ApiError(422, "Invalid duration format");
         }
       },
     },

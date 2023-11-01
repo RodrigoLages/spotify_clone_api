@@ -1,3 +1,4 @@
+const ApiError = require("../classes/ApiError");
 const Playlist = require("../hooks/Playlist");
 const Track = require("../hooks/Track");
 const deleteFile = require("../util/deleteFile");
@@ -6,13 +7,13 @@ const getAudDuration = require("../util/getAudDuration");
 const UploadController = {
   addPlaylistImg: async (req) => {
     if (!req.file) {
-      throw new Error("Invalid file format. Only JPG and PNG are allowed.");
+      throw new ApiError(415, "Invalid file format. Only JPG and PNG are allowed.");
     }
 
     const filePath = req.file.path;
     const playlist = await Playlist.findByPk(req.params.id).catch(() => {
       deleteFile(filePath);
-      throw new Error("Playlist not found");
+      throw new ApiError(404, "Playlist not found");
     });
     playlist.set({ image: filePath });
     await playlist.save();
@@ -22,13 +23,13 @@ const UploadController = {
 
   addTrackAud: async (req) => {
     if (!req.file) {
-      throw new Error("Invalid file format. Only MP3 is allowed.");
+      throw new ApiError(415, "Invalid file format. Only MP3 is allowed.");
     }
 
     const filePath = req.file.path;
     const track = await Track.findByPk(req.params.id).catch(() => {
       deleteFile(filePath);
-      throw new Error("Track not found");
+      throw new ApiError(404, "Track not found");
     });
 
     const duration = getAudDuration(filePath);

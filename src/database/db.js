@@ -1,4 +1,5 @@
 const { Sequelize } = require("sequelize");
+const ApiError = require("../classes/ApiError");
 const { DB_USER, DB_PASS, DB_NAME } = process.env;
 
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
@@ -9,7 +10,7 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
     freezeTableName: true,
     hooks: {
       afterFind(result) {
-        if (!result) throw new Error("Record not found");
+        if (!result) throw new ApiError(404, "Record not found");
       },
     },
   },
