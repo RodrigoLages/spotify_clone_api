@@ -4,7 +4,11 @@ const responseHandler = require("../middlewares/responseHandler");
 const imgMulter = require("../services/imgMulter");
 const audMulter = require("../services/audMulter");
 
-router.post("/playlist/:id", imgMulter.single("image"), responseHandler(controller.addPlaylistImg));
-router.post("/track/:id", audMulter.single("audio"), responseHandler(controller.addTrackAud));
+for (let key of Object.keys(controller)) {
+  controller[key] = responseHandler(controller[key]);
+}
+
+router.post("/playlist/:id", imgMulter.single("image"), controller.addPlaylistImg);
+router.post("/track/:id", audMulter.single("audio"), controller.addTrackAud);
 
 module.exports = router;
