@@ -21,10 +21,10 @@ const Track = sequelize.define("Track", {
 
   duration: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     validate: {
       isValidDuration(value) {
-        if (!/^[1-5]?[0-9]:[0-5][0-9]$/.test(value)) {
+        if (value && !/^[1-5]?[0-9]:[0-5][0-9]$/.test(value)) {
           throw new Error("Invalid duration format");
         }
       },

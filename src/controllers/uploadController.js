@@ -1,6 +1,7 @@
 const Playlist = require("../hooks/Playlist");
 const Track = require("../hooks/Track");
 const deleteFile = require("../util/deleteFile");
+const getAudDuration = require("../util/getAudDuration");
 
 const UploadController = {
   addPlaylistImg: async (req) => {
@@ -29,7 +30,9 @@ const UploadController = {
       deleteFile(filePath);
       throw new Error("Track not found");
     });
-    track.set({ src: filePath });
+
+    const duration = getAudDuration(filePath);
+    track.set({ duration, src: filePath });
     await track.save();
 
     return { msg: "File uploaded", filePath };
