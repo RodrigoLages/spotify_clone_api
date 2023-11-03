@@ -3,6 +3,7 @@ const ApiError = require("../classes/ApiError");
 const responseHandlingMiddleware = (controller) => async (req, res, next) => {
   try {
     const response = await controller(req, next);
+    if (!response) return; // ignores middlewares' returns
     return res.status(200).json(response);
   } catch (err) {
     if (err instanceof ApiError) {

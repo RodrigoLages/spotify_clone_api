@@ -1,5 +1,6 @@
 const ApiError = require("../classes/ApiError");
 const jwt = require("jsonwebtoken");
+const responseHandler = require("./responseHandler");
 
 const authMiddleware = {
   devAuth: async (req, next) => {
@@ -23,9 +24,12 @@ const authMiddleware = {
     if (!token) {
       throw new ApiError(401, "User not authenticated");
     }
-    jwt.verify(token, process.env.JWT_SECRET).catch(() => {
+
+    try {
+      jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
       throw new ApiError(403, "Invalid token");
-    });
+    }
 
     return next();
   },
